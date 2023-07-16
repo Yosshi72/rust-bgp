@@ -8,3 +8,4 @@ mod event;
 mod event_queue;
 pub mod peer;
 mod state;
+pub mod connection;
