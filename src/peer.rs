@@ -74,7 +74,7 @@ mod tests {
 
         // 対向機器でもPeerを貼ろうとする．別スレッドで動かす．
         tokio::spawn(async move {
-            let remote_config: Config = "64513 127.0.0.2 65412 172.0.0.1 active".parse().unwrap();
+            let remote_config: Config = "64513 127.0.0.2 65412 172.0.0.1 passive".parse().unwrap();
             let mut remote_peer: Peer = Peer::new(remote_config);
             remote_peer.start();
             remote_peer.next().await;

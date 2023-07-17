@@ -1,18 +1,22 @@
 use std::str::FromStr;
 
-use rust_bgp::peer::Peer;
 use rust_bgp::config::Config;
+use rust_bgp::peer::Peer;
 
 use tokio::time::{sleep, Duration};
+
+use std::env;
 
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
-    let configs = vec![
-        Config::from_str("64512 127.0.0.1 65413 172.0.0.2 active").unwrap()
-    ];
-
-    let mut peers : Vec<Peer> = configs.into_iter().map(Peer::new).collect();
+    let config = env::args().skip(1).fold("".to_owned(), |mut acc, s| {
+        acc += &(s.to_owned() + " ");
+        acc
+    });
+    let config = config.trim_end();
+    let configs = vec![Config::from_str(&config).unwrap()];
+    let mut peers: Vec<Peer> = configs.into_iter().map(Peer::new).collect();
     for peer in &mut peers {
         peer.start();
     }
